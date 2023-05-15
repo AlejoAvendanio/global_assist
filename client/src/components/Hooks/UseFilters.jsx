@@ -10,7 +10,6 @@ export const UseFilter = () => {
       baseURL: `http://localhost:3000/api/entries/all/${page}`,
   }
     axios(config).then(res=>{
-      console.log(res.data)
       setGuest(res.data)
       setEntries(res.data)
       return
@@ -87,7 +86,6 @@ export const UseFilter = () => {
       baseURL: `http://localhost:3000/api/entries/delete/${id}`,
     }
     axios(config).then(res=>{
-      // console.log(res.data)
       alert("delete successfully")
   }).catch(e=>alert(e))
     const filtered = guest.filter(e=>e.id!==id)
