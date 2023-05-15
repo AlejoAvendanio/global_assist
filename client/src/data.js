@@ -1,0 +1,32 @@
+const DATA = [
+    {
+        id:1,
+        firstname:"Alejo",
+        lastname:"Avendaño",
+        description:"Junín",
+        datestart:"2022-02-15",
+        dateEnd:""
+    },{
+        id:2,
+        firstname:"1",
+        lastname:"1",
+        description:"1",
+        datestart:"2022-01-01",
+        dateEnd:""
+    },{
+        id:3,
+        firstname:"2",
+        lastname:"2",
+        description:"2",
+        datestart:"2022-04-12",
+        dateEnd:""
+    },{
+        id:4,
+        firstname:"3",
+        lastname:"3",
+        description:"3",
+        datestart:"2022-03-21",
+        dateEnd:""
+    }
+]
+export default DATA
