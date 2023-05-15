@@ -11,7 +11,7 @@ export const DataContext= ({children})=>{
     useEffect(()=>{
         const config = {
             method: "get",
-            baseURL: `${import.meta.env.VITE_API_URL}/api/entries/all/${page}`,
+            baseURL: `https://globalassist-production.up.railway.app/api/entries/all/${page}`,
         }
         axios(config).then(res=>{
             setGuest(res.data)
