@@ -67,7 +67,7 @@ export const Header = () => {
         <button onClick={()=>dateStart()}>Start</button>
         <button onClick={()=>dateEnd()}>End</button>
         <select name="" id="" onChange={(e)=>handleOptions(e)}>
-          <option defaultValue>state</option>
+          <option value={"state"}>All state</option>
           {
             door ? door.map(d=><option key={d.id} value={d.id} >{d.description}</option>) : <></>
           }
