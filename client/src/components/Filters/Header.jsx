@@ -17,7 +17,7 @@ export const Header = () => {
     useEffect(()=>{
         const config = {
             method: "get",
-            baseURL: `http://localhost:3000/api/door`,
+            baseURL: `${import.meta.env.VITE_API_URL}/api/door`,
         }
         axios(config).then(res=>{
             setDoor(res.data)
@@ -53,7 +53,7 @@ export const Header = () => {
     useEffect(()=>{
       const config = {
           method: "get",
-          baseURL: `http://localhost:3000/api/guest`,
+          baseURL: `${import.meta.env.VITE_API_URL}/api/guest`,
       }
       axios(config).then(res=>{
         setGuest(res.data)

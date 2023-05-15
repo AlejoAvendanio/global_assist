@@ -7,7 +7,7 @@ export const TableDataShow = () => {
     useEffect(()=>{
         const config = {
             method: "get",
-            baseURL: `http://localhost:3000/api/entries/all/${page}`,
+            baseURL: `${import.meta.env.VITE_API_URL}/api/entries/all/${page}`,
         }
         axios(config).then(res=>{
             setGuest(guest.concat(res.data))

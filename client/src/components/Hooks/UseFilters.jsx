@@ -7,7 +7,7 @@ export const UseFilter = () => {
   const getEntries = ()=>{
     const config = {
       method: "get",
-      baseURL: `http://localhost:3000/api/entries/all/${page}`,
+      baseURL: `${import.meta.env.VITE_API_URL}/api/entries/all/${page}`,
   }
     axios(config).then(res=>{
       setGuest(res.data)
@@ -20,7 +20,7 @@ export const UseFilter = () => {
     console.log(data)
     const config = {
       method: "get",
-      baseURL: `http://localhost:3000/api/entries?DoorId=${data.doorId}&FromDate=${fromDate}&ToDate=${toDate}&GuestId=${data.guestId}`,
+      baseURL: `${import.meta.env.VITE_API_URL}/api/entries?DoorId=${data.doorId}&FromDate=${fromDate}&ToDate=${toDate}&GuestId=${data.guestId}`,
   }
   axios(config)
     .then(res=> {
@@ -83,7 +83,7 @@ export const UseFilter = () => {
   const deleteGuest = (id)=>{
     const config={
       method: "DELETE",
-      baseURL: `http://localhost:3000/api/entries/delete/${id}`,
+      baseURL: `${import.meta.env.VITE_API_URL}/api/entries/delete/${id}`,
     }
     axios(config).then(res=>{
       alert("delete successfully")
