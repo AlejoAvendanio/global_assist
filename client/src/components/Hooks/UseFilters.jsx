@@ -3,7 +3,19 @@ import Context from '../dataContext'
 import axios from 'axios'
 
 export const UseFilter = () => {
-  const {setGuest,guest,page,setPage,entries,setEntries} = useContext(Context)
+  const {setGuest,guest,page,setPage,entries,setEntries,cuantityPage,setCuantityPage} = useContext(Context)
+
+  
+    const setPages = ()=>{
+      const config = {
+        method: "get",
+        baseURL: `${import.meta.env.VITE_API_URL}/api/entries/page`,
+    }
+    axios(config).then(res=>{
+        setCuantityPage(new Array(res.data).fill(0));
+    })
+    }
+
   const getEntries = ()=>{
     const config = {
       method: "get",
@@ -12,12 +24,15 @@ export const UseFilter = () => {
     axios(config).then(res=>{
       setGuest(res.data)
       setEntries(res.data)
+      setPages()
       return
   }).catch(e=>alert(e))
   }
 
+
+
+
   const addGuest = (data,fromDate,toDate)=>{
-    console.log(data)
     const config = {
       method: "get",
       baseURL: `${import.meta.env.VITE_API_URL}/api/entries?DoorId=${data.doorId}&FromDate=${fromDate}&ToDate=${toDate}&GuestId=${data.guestId}`,
@@ -27,6 +42,7 @@ export const UseFilter = () => {
       if(res.data){
       alert("entrie created")
       getEntries()
+      setPages()
       }
       else{
         alert("an error occurred")
@@ -40,7 +56,6 @@ export const UseFilter = () => {
 
 
   const dateStart = () => {
-    console.log(guest)
     const orderdata = guest.reduce((acc, item) => {
       const dateItem = new Date(item.created).getTime();
       const index = acc.findIndex((obj) => new Date(obj.created).getTime() < dateItem);
@@ -56,7 +71,6 @@ export const UseFilter = () => {
 
 
   const dateEnd = () => {
-    console.log(guest)
     const orderdata = guest.reduce((acc, item) => {
       const dateItem = new Date(item.created).getTime();
       const index = acc.findIndex((obj) => new Date(obj.created).getTime() > dateItem);
@@ -71,7 +85,6 @@ export const UseFilter = () => {
   }
 
   const siteFilter = (id)=>{
-    console.log(id)
     if(id=="state"){
       setGuest(entries)
     }else{
@@ -88,13 +101,16 @@ export const UseFilter = () => {
     }
     axios(config).then(res=>{
       alert("delete successfully")
+      const filtered = guest.filter(e=>e.id!==id)
+      getEntries()
+      setGuest(filtered)
+      setEntries(filtered)
+      setPages()
+      setPage(1)
   }).catch(e=>alert(e))
-    const filtered = guest.filter(e=>e.id!==id)
-    setGuest(filtered)
-    setEntries(filtered)
     return
   }
 
 
-  return {setEntries,siteFilter,page,setPage,guest,setGuest,addGuest,deleteGuest,dateStart,dateEnd}
+  return {setEntries,siteFilter,page,setPage,guest,setGuest,addGuest,deleteGuest,dateStart,dateEnd,cuantityPage,setCuantityPage}
 }

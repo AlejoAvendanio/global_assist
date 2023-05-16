@@ -3,9 +3,8 @@ import { UseFilter } from '../Hooks/UseFilters.jsx'
 import axios from 'axios'
 import "./style.css";
 export const TableDataShow = () => {
-    const {page,guest,deleteGuest,setPage,setGuest,setEntries} = UseFilter()
-    const [showShowMore,setShowShowMore] = useState(false)
-    const [cuantityPage,setCuantityPage] = useState(1)
+    const {page,guest,deleteGuest,setPage,setGuest,setEntries,cuantityPage} = UseFilter()
+    
     useEffect(()=>{
         const config = {
             method: "get",
@@ -14,23 +13,10 @@ export const TableDataShow = () => {
         axios(config).then(res=>{
             setGuest(res.data)
             setEntries(res.data)
-            if(res.data.length<10){
-                setShowShowMore(false)
-            }else{
-                setShowShowMore(true)
-            }
             return
         }).catch(e=>alert(e))
     },[page])
-    useEffect(()=>{
-        const config = {
-            method: "get",
-            baseURL: `${import.meta.env.VITE_API_URL}/api/entries/page`,
-        }
-        axios(config).then(res=>{
-            setCuantityPage(new Array(res.data).fill(0));
-        })
-    },[])
+
   return (
     
     <div>{guest.length ? 
@@ -65,13 +51,14 @@ export const TableDataShow = () => {
             </table>
         <div>
             {
-                    cuantityPage?.map((p,i)=>
+                    cuantityPage.length ? cuantityPage?.map((p,i)=>
                         page===(i+1) ?
                         <strong onClick={()=>setPage(i+1)} style={{color:"#646cff", cursor:"pointer",padding:10}}>{i+1}</strong>
                         : 
                         <strong onClick={()=>setPage(i+1)} style={{color:"#fff", cursor:"pointer",padding:10}}>{i+1}</strong>
                     )
-            }
+                :<></>
+                }
         </div>
         </div>
         :<>

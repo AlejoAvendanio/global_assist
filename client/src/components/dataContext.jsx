@@ -8,6 +8,7 @@ export const DataContext= ({children})=>{
     const [guest,setGuest] = useState([])
     const [entries,setEntries] = useState([])
     const [page,setPage] = useState(1)
+    const [cuantityPage,setCuantityPage] = useState(1)
     useEffect(()=>{
         const config = {
             method: "get",
@@ -19,7 +20,16 @@ export const DataContext= ({children})=>{
             return
         }).catch(e=>alert(e))
     },[])
-    return <Context.Provider value={{guest,setGuest,page,setPage,entries,setEntries}}>
+    useEffect(()=>{
+        const config = {
+            method: "get",
+            baseURL: `${import.meta.env.VITE_API_URL}/api/entries/page`,
+        }
+        axios(config).then(res=>{
+            setCuantityPage(new Array(res.data).fill(0));
+        })
+    },[])
+    return <Context.Provider value={{guest,setGuest,page,setPage,entries,setEntries,cuantityPage,setCuantityPage}}>
     {children}
     </Context.Provider>
 };

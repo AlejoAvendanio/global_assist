@@ -4,7 +4,6 @@ const conn = require("../DB/connection")
 
 
 const postEntries = async(req,res)=>{
-    console.log("hola")
     try{
 
         const {DoorId,FromDate,ToDate,GuestId} = req.query
@@ -12,7 +11,6 @@ const postEntries = async(req,res)=>{
             // const dateNow = new Date().toLocaleString()
             const intoQuery = `INSERT INTO Entries (guestid, doorid, fromdate,todate,created) VALUES ('${GuestId}', '${DoorId}', '${FromDate}','${ToDate}',NOW());`
             const [rows] = await conn.query(intoQuery)
-            console.log(rows)
             if(rows.affectedRows){
                 res.status(200).send(true)
             }else{
@@ -28,11 +26,9 @@ const postEntries = async(req,res)=>{
 
 const deleteEntries =async (req,res)=>{
     const {id} = req.params
-    console.log(id)
     const deleteQuery = `DELETE FROM Entries WHERE id = ${id};`
     try{
         const [result] = await conn.query(deleteQuery)
-        console.log(result.affectedRows)
         if(result.affectedRows){
             res.status(200).send({result})
         }else{
@@ -59,7 +55,6 @@ const getCuantityPages =async (req,res)=>{
     try{
         const data = await conn.query('SELECT COUNT(*) AS total FROM Entries')   
         const cuantityPages = Math.ceil(data[0][0].total / 10);
-        console.log(cuantityPages)
         res.json(cuantityPages)
     }catch(err){
         res.status(400).send(err)
