@@ -49,15 +49,27 @@ const getEntries = async (req,res)=>{
     try{
         const intoQuery = `SELECT Entries.*, Guest.firstname ,Guest.lastname, Door.description FROM Entries JOIN Guest ON Entries.guestid = Guest.id JOIN Door ON Entries.doorid = Door.id LIMIT ${(number - 1) * 10}, 10;`
         const [rows] = await conn.query(intoQuery)   
-        console.log(rows) 
         res.status(200).send(rows)
     }catch(err){
         res.status(400).send({err})
     }
 }
 
+const getCuantityPages =async (req,res)=>{
+    try{
+        const data = await conn.query('SELECT COUNT(*) AS total FROM Entries')   
+        const cuantityPages = Math.ceil(data[0][0].total / 10);
+        console.log(cuantityPages)
+        res.json(cuantityPages)
+    }catch(err){
+        res.status(400).send(err)
+    }
+}
+
+
 module.exports = {
     postEntries,
     deleteEntries,
-    getEntries
+    getEntries,
+    getCuantityPages
 }

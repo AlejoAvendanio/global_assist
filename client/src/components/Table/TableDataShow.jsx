@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { UseFilter } from '../Hooks/UseFilters.jsx'
 import axios from 'axios'
+import "./style.css";
 export const TableDataShow = () => {
     const {page,guest,deleteGuest,setPage,setGuest,setEntries} = UseFilter()
     const [showShowMore,setShowShowMore] = useState(false)
+    const [cuantityPage,setCuantityPage] = useState(1)
     useEffect(()=>{
         const config = {
             method: "get",
             baseURL: `${import.meta.env.VITE_API_URL}/api/entries/all/${page}`,
         }
         axios(config).then(res=>{
-            setGuest(guest.concat(res.data))
-            setEntries(guest.concat(res.data))
+            setGuest(res.data)
+            setEntries(res.data)
             if(res.data.length<10){
                 setShowShowMore(false)
             }else{
@@ -20,33 +22,40 @@ export const TableDataShow = () => {
             return
         }).catch(e=>alert(e))
     },[page])
-    console.log(guest)
+    useEffect(()=>{
+        const config = {
+            method: "get",
+            baseURL: `${import.meta.env.VITE_API_URL}/api/entries/page`,
+        }
+        axios(config).then(res=>{
+            setCuantityPage(new Array(res.data).fill(0));
+        })
+    },[])
   return (
     
     <div>{guest.length ? 
         <div>
             <table style={{display:"flex",justifyContent:"space-between",flexDirection:"column", border:"solid 1px #646cff",padding:"10px",marginTop:10}}>
-                <thead>
-                    <tr >
-                        <td style={{color:"#646cff",padding:10}}>name</td>
-                        <td style={{color:"#646cff",padding:10}}>lastname</td>
-                        <td style={{color:"#646cff",padding:10}}>description</td>
-                        <td style={{color:"#646cff"}}>from date</td>
-                        <td style={{color:"#646cff"}}>to date</td>
+                <thead >
+                    <tr>
+                        <th style={{color:"#646cff"}}>name</th>
+                        <th style={{color:"#646cff"}}>description</th>
+                        <th style={{color:"#646cff"}}>from date</th>
+                        <th style={{color:"#646cff"}}>to date</th>
+                        <th style={{color:"#646cff"}}>created</th>
+                        <th style={{color:"#646cff"}}>delete entry</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        guest.map(e=>{
-                            
+                        guest?.map(e=>{
                             return<tr key={e.id}>
-                                    <td style={{paddingRight:5,paddingLeft:5}}>{e?.firstname}</td>
-                                    <td style={{paddingRight:5,paddingLeft:5}}>{e?.lastname}</td>
+                                    <td style={{paddingRight:5,paddingLeft:5}}>{e?.firstname},{e?.lastname}</td>
                                     <td style={{paddingRight:5,paddingLeft:5}}>{e?.description}</td>
                                     <td>{e?.fromdate}</td>
                                     <td >{e?.todate}</td>
+                                    <td style={{color:"#646cff"}}>{e?.created}</td>
                                     <td><button onClick={()=>deleteGuest(e.id)}>delete guest</button></td>
-                                    <td><button>Show</button></td>
                                 </tr>
                             }
                             )
@@ -56,11 +65,12 @@ export const TableDataShow = () => {
             </table>
         <div>
             {
-                (guest.length >= 10 && showShowMore) 
-                    ?
-                    <strong onClick={()=>setPage(prev=>prev+1)} style={{color:"#646cff", cursor:"pointer"}}>show more</strong>
-                    : 
-                    <></>
+                    cuantityPage?.map((p,i)=>
+                        page===(i+1) ?
+                        <strong onClick={()=>setPage(i+1)} style={{color:"#646cff", cursor:"pointer",padding:10}}>{i+1}</strong>
+                        : 
+                        <strong onClick={()=>setPage(i+1)} style={{color:"#fff", cursor:"pointer",padding:10}}>{i+1}</strong>
+                    )
             }
         </div>
         </div>

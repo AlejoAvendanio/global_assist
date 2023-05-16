@@ -40,9 +40,10 @@ export const UseFilter = () => {
 
 
   const dateStart = () => {
+    console.log(guest)
     const orderdata = guest.reduce((acc, item) => {
-      const dateItem = new Date(item.fromdate).getTime();
-      const index = acc.findIndex((obj) => new Date(obj.fromdate).getTime() > dateItem);
+      const dateItem = new Date(item.created).getTime();
+      const index = acc.findIndex((obj) => new Date(obj.created).getTime() < dateItem);
       if (index === -1) {
         return [...acc, item];
       } else {
@@ -57,8 +58,8 @@ export const UseFilter = () => {
   const dateEnd = () => {
     console.log(guest)
     const orderdata = guest.reduce((acc, item) => {
-      const dateItem = new Date(item.todate).getTime();
-      const index = acc.findIndex((obj) => new Date(obj.todate).getTime() < dateItem);
+      const dateItem = new Date(item.created).getTime();
+      const index = acc.findIndex((obj) => new Date(obj.created).getTime() > dateItem);
       if (index === -1) {
         return [...acc, item];
       } else {
